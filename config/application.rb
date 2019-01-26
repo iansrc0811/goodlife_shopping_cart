@@ -27,5 +27,9 @@ module GoodlifeShoppingCartDesign
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+    # slim
+    config.generators do |g|
+      g.template_engine = :slim
+    end
   end
 end
