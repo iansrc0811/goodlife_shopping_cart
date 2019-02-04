@@ -25,4 +25,28 @@ class Order < ApplicationRecord
     save!
   end
 
+  def add_to_cart(product, pcs)
+    raise "數量需大於 1 !" if pcs <= 0
+    with_lock do
+      Order.transaction do
+        byebug
+        item = line_items.where(product_id: product.id).last.presence
+        if item.nil?
+          line_items.create!(product_id: product.id, pcs: pcs, total_price: product.price * pcs)
+        else
+          item.pcs += pcs
+          item.total_price = product.price * item.pcs
+          item.save!
+        end
+        set_total_price
+      end
+    end
+  end
+
+  def set_total_price
+    if line_items.exists?
+      update!(price: line_items.sum(&:total_price))
+    end
+  end
+
 end

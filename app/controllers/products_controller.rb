@@ -1,6 +1,15 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :add_to_cart]
 
+  def add_to_cart
+    current_user = User.first
+    order = current_user.orders.cart.last || carrent_user.default_cart
+    order.add_to_cart(@product, 1)
+    render json: { success: true }
+    # render status: 200
+  rescue => e
+    render json: { message: e.message }, status: 400
+  end
   # GET /products
   # GET /products.json
   def index
