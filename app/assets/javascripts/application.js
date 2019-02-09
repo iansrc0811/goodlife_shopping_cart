@@ -14,4 +14,5 @@
 //= require jquery_ujs
 //= require popper
 //= require bootstrap
+//= require skdslider.min
 //= require_tree .

@@ -4,8 +4,9 @@ class ProductsController < ApplicationController
   def add_to_cart
     current_user = User.first
     order = current_user.orders.cart.last || carrent_user.default_cart
-    order.add_to_cart(@product, 1)
-    render json: { success: true }
+    order.add_to_cart(@product, params[:pcs].to_i)
+    render json: { success: true, order: order.as_json(include: [{ line_items: { include: :product } }]) }
+
     # render status: 200
   rescue => e
     render json: { message: e.message }, status: 400

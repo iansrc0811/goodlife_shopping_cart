@@ -1,44 +1,193 @@
-h1 Listing products
+doctype html
+html
+  head
 
-table
-  thead
-    tr
-      th Name
-      th Uid
-      th Stock
-      th Price
-      th
-      th
-      th
-      th
+    title Super Market an Ecommerce Online Shopping Category Flat Bootstrap Responsive Website Template  Products :: w3layouts
+    /! for-mobile-apps
+    meta content="width=device-width, initial-scale=1" name="viewport"
+    meta content=("text/html; charset=utf-8") http-equiv="Content-Type"
+    link href="//fonts.googleapis.com/css?family=Raleway:400,100,100italic,200,200italic,300,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic" rel="stylesheet" type="text/css" /
+    link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic" rel="stylesheet" type="text/css" /
+    /! start-smoth-scrolling
+    javascript:
+       jQuery(document).ready(function($) {
+      	 $(".scroll").click(function(event){
+      		 event.preventDefault();
+      		 $('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+      	 });
+       });
+    /! start-smoth-scrolling
+  body
+    /! Modal
+    #cartModal.modal.fade aria-hidden="true" aria-labelledby="exampleModalCenterTitle" role="dialog" tabindex="-1"
+      .modal-dialog.modal-dialog-centered role="document"
+        .modal-content
+          .modal-header
+            h5#exampleModalLongTitle.modal-title Shopping Cart
+            button.close aria-label="Close" data-dismiss="modal" type="button"
+              span aria-hidden="true"  &times;
+          .modal-body
+            / #hello
+            /   p
+            /     | {{message}}
+            /   app
+          .modal-footer
+            button.btn.btn-secondary data-dismiss="modal" type="button"  Close
+            button.btn.btn-primary type="button"  Save changes
 
-  tbody
-    - @products.each do |product|
-      tr
-        td = product.name
-        td = product.uid
-        td = product.stock
-        td = product.price
-        td
-          button.btn-primary#add_to_cart type="button" value="#{product.id}"
-            | Add to cart
-        / th = link_to 'Add to cart', add_to_cart_product_path(product)
-        td = link_to 'Show', product
-        td = link_to 'Edit', edit_product_path(product)
-        td = link_to 'Destroy', product, data: { confirm: 'Are you sure?' }, method: :delete
+    / .agileits_header
+    /   .container
+    /     .w3l_offers
+    /       p
+    /         | SALE UP TO 70% OFF. USE CODE "SALE70%" .
+    /         a href="#"
+    /           | SHOP NOW
+    /     .agile-login
+    /       ul
+    /         li
+    /           a href="#"
+    /             | Create Account
+    /         li
+    /           a href="#"
+    /             | Login
+    /         li
+    /           a href="#l"
+    /             | Help
+    /     .product_list_header
+    /       form.last action="#" method="post"
+    /         input name="cmd" type="hidden" value="_cart" /
+    /         input name="display" type="hidden" value="1" /
+    /         button.w3view-cart name="submit" type="submit" value=""
+    /           i.fa.fa-cart-arrow-down aria-hidden="true"
+    /     .clearfix
+    / .logo_products
+    /   .container
+    /     .w3ls_logo_products_left1
+    /       ul.phone_email
+    /         li
+    /           i.fa.fa-phone aria-hidden="true"
+    /            Order online or call us : (+0123) 234 567
+    /     .w3ls_logo_products_left
+    /       h1
+    /         a href="index.html"  super Market
+    /     .w3l_search
+    /       form action="#" method="post"
+    /         input name="Search" placeholder=("Search for a Product...") required="" type="search" /
+    /         button.btn.btn-default.search aria-label=("Left Align") type="submit"
+    /           i.fa.fa-search aria-hidden="true"
+    /         .clearfix
+    /     .clearfix
+    / .navigation-agileits
+    /   nav.navbar.navbar-expand-lg.navbar-light
+    /     a.navbar-brand href="#" style="color: #fff"
+    /       | Ian's Shop
+    /     button.navbar-toggler aria-controls="navbarNavDropdown" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarNavDropdown" data-toggle="collapse" type="button"
+    /       span.navbar-toggler-icon style="color: #fff"
+    /     #navbarNavDropdown.collapse.navbar-collapse
+    /       ul.navbar-nav
+    /         li.nav-item.active
+    /           a.nav-link href="#" style="color: #fff"
+    /             | Home
+    /             span.sr-only (current)
+    /         li.nav-item
+    /           a.nav-link href="#"  style="color: #fff"
+    /             |  Features
+    /         li.nav-item
+    /           a.nav-link href="#"  style="color: #fff"
+    /             |  Pricing
+    /         li.nav-item.dropdown
+    /           a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" style="color: #fff"
+    /             | Dropdown link
+    /           .dropdown-menu aria-labelledby="navbarDropdownMenuLink"
+    /             a.dropdown-item href="#" style="color: #fff"
+    /               | Action
+    /             a.dropdown-item href="#" style="color: #fff"
+    /               | Another action
+    /             a.dropdown-item href="#" style="color: #fff"
+    /               | Something else here
 
-br
 
-= link_to 'New Product', new_product_path
+    .card-deck
+      - @products.find_each do |product|
+        .col-md-4
+          .card
+            .card-body
+              h5.card-title
+              p.card-text = product.name
+            .card-footer
+              .row
+                .col-sm-2
+                  select id="add-to-cart-counter-#{product.id}" name="count"
+                    option value="1"  1
+                    option value="2"  2
+                    option value="3"  3
+                    option value="4"  4
+                    option value="5"  5
+                    option value="6"  6
+                    option value="7"  7
+                    option value="8"  8
+                    option value="9"  9
+                    option value="10"  10
+                    option value="11"  11
+                    option value="12"  12
+                    option value="13"  13
+                    option value="14"  14
+                    option value="15"  15
+                    option value="16"  16
+                    option value="17"  17
+                    option value="18"  18
+                    option value="19"  19
+                    option value="20"  20
+                .col-sm-10
+                  button.btn.btn-primary id="add-to-cart-btn-#{product.id}" data-product="#{product.id}" type="button" data-target="#cartModal" data-toggle="modal"
+                    | Add to cart
+              / small.text-muted Last updated 3 mins ago
 
 javascript:
-  console.log('tsetsets')
-  $('#add_to_cart').click();
-  $('#add_to_cart').on('click', function() {
+    $(document).ready(function() {
+      var defaults = {
+      containerID: 'toTop', // fading element id
+      containerHoverID: 'toTopHover', // fading element hover id
+      scrollSpeed: 1200,
+      easingType: 'linear'
+      };
+
+      $().UItoTop({ easingType: 'easeOutQuart' });
+
+      });
+/! //here ends scrolling icon
+javascript:
+    jQuery(document).ready(function(){
+      jQuery('#demo1').skdslider({'delay':5000, 'animationSpeed': 2000,'showNextPrev':true,'showPlayButton':true,'autoSlide':true,'animationType':'fading'});
+
+      jQuery('#responsive').change(function(){
+        $('#responsive_wrapper').width(jQuery(this).val());
+      });
+
+    });
+/! //main slider-banner
+javascript:
+  $("button[id*='add-to-cart-btn']").on('click', function() {
+    let productId = $(this).data('product')
+    let selectId = '#add-to-cart-counter-' + productId
+    let productPcs = $(selectId).val()
     $.ajax({
       type: "POST",
-      url: '/products/' + $('#add_to_cart').val() +  '/add_to_cart',
-      success: function(data) {
+      url: '/products/' + productId +  '/add_to_cart',
+      data: {
+        pcs: productPcs
+      },
+      success: function(response, status) {
+        console.log(response)
       }
     })
-  });
+  })
+  //console.log('tsetsets')
+  //$('#add_to_cart').click();
+  //$('#add_to_cart').on('click', function() {
+  //  $.ajax({
+  //    type: "POST",
+  //    url: '/products/' + $('#add_to_cart').val() +  '/add_to_cart',
+  //    success: function(data) {
+  //    }
+  //  })

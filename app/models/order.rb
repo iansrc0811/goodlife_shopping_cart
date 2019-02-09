@@ -29,7 +29,6 @@ class Order < ApplicationRecord
     raise "數量需大於 1 !" if pcs <= 0
     with_lock do
       Order.transaction do
-        byebug
         item = line_items.where(product_id: product.id).last.presence
         if item.nil?
           line_items.create!(product_id: product.id, pcs: pcs, total_price: product.price * pcs)
