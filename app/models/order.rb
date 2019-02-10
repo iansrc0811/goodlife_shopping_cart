@@ -48,4 +48,16 @@ class Order < ApplicationRecord
     end
   end
 
+  def items
+    items_array = line_items.includes(:product).map do |item|
+      {
+        product_name: item.product.name,
+        pcs: item.pcs,
+        pcs_price: item.product.price,
+        total_price: item.total_price
+      }
+    end
+    # items_array << { order_total_price:
+  end
+
 end

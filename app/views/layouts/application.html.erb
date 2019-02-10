@@ -6,7 +6,8 @@
 
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
-    <%= javascript_pack_tag 'hello_vue' %>
+    <%= javascript_pack_tag 'cart' %>
+
     <div class="agileits_header">
       <div class="container">
         <div class="w3l_offers">
@@ -20,9 +21,9 @@
           </ul>
         </div>
         <div class="product_list_header">
-          <form action="#" class="last" method="post"><input name="cmd" type="hidden" value="_cart"><input name="display"
-              type="hidden" value="1"><button class="w3view-cart" name="submit" type="submit" value=""><i aria-hidden="true"
-                class="fa fa-cart-arrow-down"></i></button></form>
+          <button class="w3view-cart" name="submit" type="submit" value="">
+            <i aria-hidden="true" class="fa fa-cart-arrow-down" data-target="#cartModal" data-toggle="modal"></i>
+          </button>
         </div>
         <div class="clearfix"></div>
       </div>

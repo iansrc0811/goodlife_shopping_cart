@@ -27,86 +27,10 @@ html
             button.close aria-label="Close" data-dismiss="modal" type="button"
               span aria-hidden="true"  &times;
           .modal-body
-            #hello
-              p
-                | {{message}}
-              app
+            #cart
           .modal-footer
             button.btn.btn-secondary data-dismiss="modal" type="button"  Close
             button.btn.btn-primary type="button"  Save changes
-
-    / .agileits_header
-    /   .container
-    /     .w3l_offers
-    /       p
-    /         | SALE UP TO 70% OFF. USE CODE "SALE70%" .
-    /         a href="#"
-    /           | SHOP NOW
-    /     .agile-login
-    /       ul
-    /         li
-    /           a href="#"
-    /             | Create Account
-    /         li
-    /           a href="#"
-    /             | Login
-    /         li
-    /           a href="#l"
-    /             | Help
-    /     .product_list_header
-    /       form.last action="#" method="post"
-    /         input name="cmd" type="hidden" value="_cart" /
-    /         input name="display" type="hidden" value="1" /
-    /         button.w3view-cart name="submit" type="submit" value=""
-    /           i.fa.fa-cart-arrow-down aria-hidden="true"
-    /     .clearfix
-    / .logo_products
-    /   .container
-    /     .w3ls_logo_products_left1
-    /       ul.phone_email
-    /         li
-    /           i.fa.fa-phone aria-hidden="true"
-    /            Order online or call us : (+0123) 234 567
-    /     .w3ls_logo_products_left
-    /       h1
-    /         a href="index.html"  super Market
-    /     .w3l_search
-    /       form action="#" method="post"
-    /         input name="Search" placeholder=("Search for a Product...") required="" type="search" /
-    /         button.btn.btn-default.search aria-label=("Left Align") type="submit"
-    /           i.fa.fa-search aria-hidden="true"
-    /         .clearfix
-    /     .clearfix
-    / .navigation-agileits
-    /   nav.navbar.navbar-expand-lg.navbar-light
-    /     a.navbar-brand href="#" style="color: #fff"
-    /       | Ian's Shop
-    /     button.navbar-toggler aria-controls="navbarNavDropdown" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarNavDropdown" data-toggle="collapse" type="button"
-    /       span.navbar-toggler-icon style="color: #fff"
-    /     #navbarNavDropdown.collapse.navbar-collapse
-    /       ul.navbar-nav
-    /         li.nav-item.active
-    /           a.nav-link href="#" style="color: #fff"
-    /             | Home
-    /             span.sr-only (current)
-    /         li.nav-item
-    /           a.nav-link href="#"  style="color: #fff"
-    /             |  Features
-    /         li.nav-item
-    /           a.nav-link href="#"  style="color: #fff"
-    /             |  Pricing
-    /         li.nav-item.dropdown
-    /           a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" style="color: #fff"
-    /             | Dropdown link
-    /           .dropdown-menu aria-labelledby="navbarDropdownMenuLink"
-    /             a.dropdown-item href="#" style="color: #fff"
-    /               | Action
-    /             a.dropdown-item href="#" style="color: #fff"
-    /               | Another action
-    /             a.dropdown-item href="#" style="color: #fff"
-    /               | Something else here
-
-
     .card-deck
       - @products.find_each do |product|
         .col-md-4
