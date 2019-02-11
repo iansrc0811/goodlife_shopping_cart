@@ -2,7 +2,6 @@ class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
 
   def get_cart
-    current_user = User.first
     order = current_user.orders.cart.last || current_user.default_cart
     item_array = order.items
     render json: { success: true, items: item_array, total_price: order.price }

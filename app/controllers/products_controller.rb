@@ -2,8 +2,7 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy, :add_to_cart]
 
   def add_to_cart
-    current_user = User.first
-    order = current_user.orders.cart.last || carrent_user.default_cart
+    order = current_user.orders.cart.last || current_user.default_cart
     order.add_to_cart(@product, params[:pcs].to_i)
     render json: { success: true, order: order.as_json(include: [{ line_items: { include: :product } }]) }
 
