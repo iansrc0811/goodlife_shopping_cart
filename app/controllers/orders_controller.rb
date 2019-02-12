@@ -1,12 +1,12 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:remove_item, :show, :edit, :update, :destroy]
+  before_action :set_order, only: [:edit_item, :remove_item, :show, :edit, :update, :destroy]
 
   def get_cart
     order = current_user.orders.cart.last || current_user.default_cart
     item_array = order.items
     render json: { success: true, order_id: order.id, items: item_array, total_price: order.price }
   rescue => e
-    render json: { success: false, message: e.message }
+    render_failure(e.message)
   end
 
   def remove_item
@@ -14,9 +14,27 @@ class OrdersController < ApplicationController
     item.destroy!
     @order.set_total_price
     item_array = @order.items
-    render json: { success: true, order_id: @order.id, items: item_array, total_price: @order.price }
+    data = { order_id: @order.id, items: item_array, total_price: @order.price }
+    render_success(data)
   rescue => e
-    render json: { success: false, message: e.message }
+    render_failure(e.message)
+  end
+
+  def edit_item
+    pcs = params[:pcs].to_i
+    raise "數量不能小於 0" if pcs < 0
+    item = @order.line_items.where(product_id: params[:product_id]).last
+    if pcs == 0
+      item.destroy!
+    else
+      item.set_total_price(pcs)
+    end
+    @order.set_total_price
+    item_array = @order.items
+    data = { order_id: @order.id, items: item_array, total_price: @order.price }
+    render_success(data)
+  rescue => e
+    render_failure(e.message)
   end
 
   def index
