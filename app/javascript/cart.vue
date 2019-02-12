@@ -22,7 +22,7 @@
                       //-   template(v-for="value in Array.from(new Array(100),(val,index)=>index)")
                       //-     option(:value="value" :selected="value == cartItem.pcs ? true : false") {{ value }}
                     .col-sm-2
-                      button.btn.btn-danger(type="button") x
+                      button.btn.btn-danger(type="button" @click="removeItem(cartItem.product_id)") x
                     .col-sm-3
                       //- span {{ cartItem.pcs * cartItem.pcs_price }}
                       span {{ getTotalPrice(cartItem.product_id) }}
@@ -61,7 +61,8 @@ export default {
     return {
       cartMessage: "Hello cart!",
       products: [],
-      cartItems: []
+      cartItems: [],
+      orderId: null
     }
   },
   computed: {
@@ -84,6 +85,7 @@ export default {
       })
       .then((response) => {
         this.cartItems = response.data.items
+        this.orderId = response.data.order_id
       });
     },
     getProducts: function() {
@@ -92,7 +94,6 @@ export default {
         url: '/products.json'
       })
       .then((response) => {
-        // console.log(response)
         this.products = response.data
       });
     },
@@ -127,6 +128,16 @@ export default {
       .catch(error => {
       });
     },
+    removeItem: function(productId) {
+      axios.post('/orders/' + this.orderId + '/remove_item', {
+        product_id: productId
+      }).then(response => {
+        this.cartItems = response.data.items
+      })
+      .catch(error => {
+
+      })
+    },
     totalPrice: function() {
       // console.log('totalPrice: ' + this.cartItems.map(item => item.total_price))
       if (this.cartItems.length > 0) {
@@ -139,10 +150,6 @@ export default {
   mounted: function() {
     this.getCart()
     this.getProducts()
-
   },
-  destroyed: function() {
-    console.log('destroyed')
-  }
 }
 </script>

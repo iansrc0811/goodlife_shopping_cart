@@ -1,13 +1,24 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_action :set_order, only: [:remove_item, :show, :edit, :update, :destroy]
 
   def get_cart
     order = current_user.orders.cart.last || current_user.default_cart
     item_array = order.items
-    render json: { success: true, items: item_array, total_price: order.price }
+    render json: { success: true, order_id: order.id, items: item_array, total_price: order.price }
+  rescue => e
+    render json: { success: false, message: e.message }
   end
-  # GET /orders
-  # GET /orders.json
+
+  def remove_item
+    item = @order.line_items.where(product_id: params[:product_id]).last
+    item.destroy!
+    @order.set_total_price
+    item_array = @order.items
+    render json: { success: true, order_id: @order.id, items: item_array, total_price: @order.price }
+  rescue => e
+    render json: { success: false, message: e.message }
+  end
+
   def index
     @orders = Order.all
   end
