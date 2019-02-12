@@ -17,14 +17,10 @@
                     .col-sm-5
                       h3 {{ cartItem.product_name }}
                     .col-sm-2
-                      input(type="number" v-model:value="cartItem.pcs" style="width: 60px")
-                      //- select name="count"
-                      //-   template(v-for="value in Array.from(new Array(100),(val,index)=>index)")
-                      //-     option(:value="value" :selected="value == cartItem.pcs ? true : false") {{ value }}
+                      input(type="number" v-model:value="cartItem.pcs" style="width: 60px" v-on:input="editCartItemNumber(cartItem)")
                     .col-sm-2
                       button.btn.btn-danger(type="button" @click="removeItem(cartItem.product_id)") x
                     .col-sm-3
-                      //- span {{ cartItem.pcs * cartItem.pcs_price }}
                       span {{ getTotalPrice(cartItem.product_id) }}
                 hr
             div#subtotal
@@ -45,9 +41,6 @@
               .row
                 .col-sm-4
                   input(type="number" name="productCount" style="width: 60px" value=1 :id="'add-to-cart-counter-' + product.id")
-                  //- select(:id="'add-to-cart-counter-' + product.id" name="count")
-                  //-   template(v-for="value in Array.from(new Array(20),(val,index)=>index+1)")
-                  //-     option(:value="value") {{ value }}
                 .col-sm-8
                   button.btn.btn-primary(:id="'add-to-cart-btn-' + product.id" :data-product="product.id" type="button" data-target="#cartModal" data-toggle="modal" @click="addToCart(product.id)")
                     | Add to cart
@@ -73,7 +66,6 @@ export default {
       let item = this.cartItems.find(item => {
         return item.product_id == productId
       })
-      // return
       let lineItemTotalPrice = Number(item.pcs) * Number(item.pcs_price)
       item.total_price = lineItemTotalPrice
       return lineItemTotalPrice
@@ -98,7 +90,6 @@ export default {
       });
     },
     addToCart: function(productId) {
-      // let productId = $("button[id='add-to-cart-btn-3']").data('product')
       let productPcs = $("#add-to-cart-counter-" + productId).val()
       axios.post('/products/' + productId + '/add_to_cart', {
         pcs: productPcs
@@ -138,8 +129,18 @@ export default {
 
       })
     },
+    editCartItemNumber: function(cartItem) {
+      axios.post('/orders/' + this.orderId + '/edit_item', {
+        product_id: cartItem.product_id,
+        pcs: cartItem.pcs
+      }).then(response => {
+        this.cartItems = response.data.items
+      })
+      .catch(error => {
+
+      })
+    },
     totalPrice: function() {
-      // console.log('totalPrice: ' + this.cartItems.map(item => item.total_price))
       if (this.cartItems.length > 0) {
         return this.cartItems.map(item => item.total_price).reduce((prev, next) => prev + next, 0);
       } else {
