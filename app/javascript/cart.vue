@@ -106,18 +106,34 @@ export default {
         let cartItem = this.cartItems.find(item => {
           return item.product_id == productId
         })
-        cartItem.pcs = Number(cartItem.pcs) + Number(productPcs)
-        cartItem.total_price = Number(cartItem.pcs) * Number(cartItem.pcs_price)
+        if (cartItem !== undefined) {
+          cartItem.pcs = Number(cartItem.pcs) + Number(productPcs)
+          cartItem.total_price = Number(cartItem.pcs) * Number(cartItem.pcs_price)
+        } else {
+          let product = this.products.find(product => product.id == productId)
+          this.cartItems.push(
+            {
+              pcs: productPcs,
+              pcs_price: product.price,
+              product_id: product.id,
+              product_name: product.name,
+              total_price: product.price * productPcs
+            }
+          )
+        }
         // console.log(response)
         // this.products = response.data
       })
       .catch(error => {
-
       });
     },
     totalPrice: function() {
-      console.log('totalPrice: ' + this.cartItems.map(item => item.total_price))
-      return this.cartItems.map(item => item.total_price).reduce((prev, next) => prev + next, 0);
+      // console.log('totalPrice: ' + this.cartItems.map(item => item.total_price))
+      if (this.cartItems.length > 0) {
+        return this.cartItems.map(item => item.total_price).reduce((prev, next) => prev + next, 0);
+      } else {
+        return 0
+      }
     }
   },
   mounted: function() {

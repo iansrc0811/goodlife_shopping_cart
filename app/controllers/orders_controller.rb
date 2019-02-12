@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
 
   def get_cart
     current_user = User.first
-    order = current_user.orders.cart.last || carrent_user.default_cart
+    order = current_user.orders.cart.last || current_user.default_cart
     item_array = order.items
     render json: { success: true, items: item_array, total_price: order.price }
   end
