@@ -49,6 +49,7 @@ test:
 #
 production:
   <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
   database: goodlife_shopping_cart_design_production
   username: goodlife_shopping_cart_design
   password: <%= ENV['GOODLIFE_SHOPPING_CART_DESIGN_DATABASE_PASSWORD'] %>
