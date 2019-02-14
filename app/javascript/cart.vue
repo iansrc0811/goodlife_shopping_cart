@@ -20,7 +20,9 @@
                       .col-sm-5
                         h3 {{ cartItem.product_name }}
                       .col-sm-2
-                        input(type="number" v-model:value="cartItem.pcs" style="width: 60px" v-on:input="editCartItemNumber(cartItem)")
+                        select(v-model="cartItem.pcs" @change="editCartItemNumber(cartItem)")
+                          template(v-for="value in Array.from(new Array(100),(val,index)=>index+1)")
+                            option(:value="value" :selected="value == cartItem.pcs ? true : false") {{ value }}
                       .col-sm-2
                         button.btn.btn-danger(type="button" @click="removeItem(cartItem.product_id)") x
                       .col-sm-3
@@ -31,7 +33,7 @@
           .modal-footer
             button.btn.btn-secondary(data-dismiss="modal" type="button")
               | Close
-            button.btn.btn-primary(type="button" @click="checkoutOrder()" :disabled="cartItems.length === 0")
+            button.btn.btn-primary(type="button" @click="checkoutOrder()" :disabled="disabledCheckout")
               | Proced to checkout
     .card-deck
       template(v-for="product in products")
@@ -44,7 +46,9 @@
               .row
                 .col-sm-4
                   input(type="number" name="productCount" style="width: 60px" value=1 :id="'add-to-cart-counter-' + product.id")
-                .col-sm-8
+                .col-sm-3
+                  | Price: {{ product.price }}
+                .col-sm-5
                   button.btn.btn-primary(:id="'add-to-cart-btn-' + product.id" :data-product="product.id" type="button" data-target="#cartModal" data-toggle="modal" @click="addToCart(product.id)")
                     | Add to cart
 
@@ -62,10 +66,12 @@ export default {
     }
   },
   computed: {
-
+    disabledCheckout: function() {
+      return this.cartItems.length === 0 || this.cartItems.some(item => item.pcs === '' || item.pcs <= 0)
+    },
   },
   methods: {
-     getTotalPrice: function(productId) {
+    getTotalPrice: function(productId) {
       let item = this.cartItems.find(item => {
         return item.product_id == productId
       })
@@ -133,15 +139,20 @@ export default {
       })
     },
     editCartItemNumber: function(cartItem) {
-      axios.post('/orders/' + this.orderId + '/edit_item', {
-        product_id: cartItem.product_id,
-        pcs: cartItem.pcs
-      }).then(response => {
-        this.cartItems = response.data.items
-      })
-      .catch(error => {
+      // console.log(typeof(cartItem.pcs))
+      if (cartItem.pcs === '') {
+        cartItem.pcs = 0
+      } else {
+        axios.post('/orders/' + this.orderId + '/edit_item', {
+          product_id: cartItem.product_id,
+          pcs: cartItem.pcs
+        }).then(response => {
+          this.cartItems = response.data.items
+        })
+        .catch(error => {
 
-      })
+        })
+      }
     },
     checkoutOrder: function() {
        axios.post('/orders/' + this.orderId + '/checkout', {
