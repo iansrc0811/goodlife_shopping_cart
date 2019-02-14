@@ -8,11 +8,12 @@ Rails.application.routes.draw do
   end
   resources :orders do
     collection do
-      get :get_cart
+      get :get_line_items
     end
     member do
       post :remove_item
       post :edit_item
+      post :checkout
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

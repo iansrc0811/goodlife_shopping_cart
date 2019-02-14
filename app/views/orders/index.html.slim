@@ -1,19 +1,23 @@
 h1 Listing orders
 
-table
+table.table.table-striped
   thead
     tr
-      th
-      th
-      th
-
+      th(scope="col") Order Number
+      th(scope="col") Confirm At
+      th(scope="col") Total Price
+      th(scope="col")
+      th(scope="col")
   tbody
     - @orders.each do |order|
       tr
-        td = link_to 'Show', order
-        td = link_to 'Edit', edit_order_path(order)
-        td = link_to 'Destroy', order, data: { confirm: 'Are you sure?' }, method: :delete
+        td(scope="row") = order.name
+        td(scope="row") = order.confirm_at.strftime('%F %T')
+        td(scope="row") = order.price
+        td(scope="row") = link_to 'Show Detail', order
+        / (scope="row")td = link_to 'Edit', edit_order_path(order)
+        td(scope="row") = link_to 'Destroy', order, data: { confirm: 'Are you sure?' }, method: :delete
 
 br
 
-= link_to 'New Order', new_order_path
+/ = link_to 'New Order', new_order_path

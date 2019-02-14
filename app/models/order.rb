@@ -21,8 +21,8 @@ class Order < ApplicationRecord
   }
 
   def default_name
-    name = '#' + sprintf("%05d", id)
-    save!
+    self.name = '#' + sprintf("%05d", id)
+    self.save!
   end
 
   def add_to_cart(product, pcs)
