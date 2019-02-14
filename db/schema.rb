@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190127160610) do
+ActiveRecord::Schema.define(version: 20190213234921) do
 
   create_table "line_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "product_id"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20190127160610) do
     t.integer "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "confirm_at"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 

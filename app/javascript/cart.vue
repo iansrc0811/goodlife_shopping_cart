@@ -11,25 +11,28 @@
                 | &times;
           .modal-body
             div#modalBodyBorder
-              template(v-for="cartItem in cartItems")
-                .container
-                  .row
-                    .col-sm-5
-                      h3 {{ cartItem.product_name }}
-                    .col-sm-2
-                      input(type="number" v-model:value="cartItem.pcs" style="width: 60px" v-on:input="editCartItemNumber(cartItem)")
-                    .col-sm-2
-                      button.btn.btn-danger(type="button" @click="removeItem(cartItem.product_id)") x
-                    .col-sm-3
-                      span {{ getTotalPrice(cartItem.product_id) }}
+              template(v-if="cartItems.length === 0")
+                h3 The Shpoping Cart Is Empty
+              template(v-else)
+                template(v-for="cartItem in cartItems")
+                  .container
+                    .row
+                      .col-sm-5
+                        h3 {{ cartItem.product_name }}
+                      .col-sm-2
+                        input(type="number" v-model:value="cartItem.pcs" style="width: 60px" v-on:input="editCartItemNumber(cartItem)")
+                      .col-sm-2
+                        button.btn.btn-danger(type="button" @click="removeItem(cartItem.product_id)") x
+                      .col-sm-3
+                        span {{ getTotalPrice(cartItem.product_id) }}
                 hr
             div#subtotal
               | Subtotal: "{{ totalPrice() }}"
           .modal-footer
             button.btn.btn-secondary(data-dismiss="modal" type="button")
               | Close
-            button.btn.btn-primary(type="button")
-              | Save changes
+            button.btn.btn-primary(type="button" @click="checkoutOrder()" :disabled="cartItems.length === 0")
+              | Proced to checkout
     .card-deck
       template(v-for="product in products")
         .col-md-4
@@ -73,7 +76,7 @@ export default {
     getCart: function() {
       axios({
         methods: 'get',
-        url: '/orders/get_cart'
+        url: '/orders/get_line_items'
       })
       .then((response) => {
         this.cartItems = response.data.items
@@ -135,6 +138,15 @@ export default {
         pcs: cartItem.pcs
       }).then(response => {
         this.cartItems = response.data.items
+      })
+      .catch(error => {
+
+      })
+    },
+    checkoutOrder: function() {
+       axios.post('/orders/' + this.orderId + '/checkout', {
+      }).then(response => {
+        window.location.href = '/orders/' + this.orderId
       })
       .catch(error => {
 

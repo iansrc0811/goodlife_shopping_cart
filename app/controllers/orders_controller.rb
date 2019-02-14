@@ -1,10 +1,14 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:edit_item, :remove_item, :show, :edit, :update, :destroy]
+  before_action :set_order, only: [:checkout, :edit_item, :remove_item, :edit, :show, :update, :destroy]
 
-  def get_cart
-    order = current_user.orders.cart.last || current_user.default_cart
+  def get_line_items
+    if params[:order_id].present?
+      order = current_user.orders.find(params[:order_id])
+    else
+      order = current_user.orders.cart.last || current_user.default_cart
+    end
     item_array = order.items
-    render json: { success: true, order_id: order.id, items: item_array, total_price: order.price }
+    render json: { success: true, order_id: order.id, order_name: order.name, items: item_array, total_price: order.price }
   rescue => e
     render_failure(e.message)
   end
@@ -37,14 +41,22 @@ class OrdersController < ApplicationController
     render_failure(e.message)
   end
 
+  def checkout
+    @order.confirm_at = Time.current
+    @order.ready!
+    # render_success({order_id: @order.id})
+    redirect_to order_path(@order)
+  end
+
   def index
-    @orders = Order.all
+    @orders = current_user.orders.where.not(status: 'cart')
   end
 
   # GET /orders/1
   # GET /orders/1.json
   def show
-    render json: { success: true, order: @order.as_json(include: [{ line_items: { include: :product } }]) }
+    @products = Product.all
+    # render json: { success: true, order: @order.as_json(include: [{ line_items: { include: :product } }]) }
   end
 
   # GET /orders/new
@@ -54,22 +66,6 @@ class OrdersController < ApplicationController
 
   # GET /orders/1/edit
   def edit
-  end
-
-  # POST /orders
-  # POST /orders.json
-  def create
-    @order = Order.new(order_params)
-
-    respond_to do |format|
-      if @order.save
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
-        format.json { render :show, status: :created, location: @order }
-      else
-        format.html { render :new }
-        format.json { render json: @order.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # PATCH/PUT /orders/1
@@ -99,7 +95,7 @@ class OrdersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
-      @order = Order.find(params[:id])
+      @order = current_user.orders.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
