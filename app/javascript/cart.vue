@@ -18,18 +18,23 @@
                   .container
                     .row
                       .col-sm-5
-                        h3 {{ cartItem.product_name }}
+                        h3
+                          | {{ cartItem.product_name }}
+                      .col-sm-1
+                        h4
+                          | {{ cartItem.pcs_price }} $/pcs
                       .col-sm-2
                         select(v-model="cartItem.pcs" @change="editCartItemNumber(cartItem)")
                           template(v-for="value in Array.from(new Array(100),(val,index)=>index+1)")
                             option(:value="value" :selected="value == cartItem.pcs ? true : false") {{ value }}
                       .col-sm-2
                         button.btn.btn-danger(type="button" @click="removeItem(cartItem.product_id)") x
-                      .col-sm-3
-                        span {{ getTotalPrice(cartItem.product_id) }}
+                      .col-sm-2
+                        span
+                          | subtotal: {{ getTotalPrice(cartItem.product_id) }}
                 hr
             div#subtotal
-              | Subtotal: "{{ totalPrice() }}"
+              | Total: "{{ totalPrice() }}"
           .modal-footer
             button.btn.btn-secondary(data-dismiss="modal" type="button")
               | Close
