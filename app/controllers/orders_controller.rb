@@ -43,6 +43,7 @@ class OrdersController < ApplicationController
 
   def checkout
     @order.confirm_at = Time.current
+    @order.save!
     @order.ready!
     # render_success({order_id: @order.id})
     redirect_to order_path(@order)
